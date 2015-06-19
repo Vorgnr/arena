@@ -1,7 +1,24 @@
-(function() {
-    var Test = require('./test');
+(function(window, document, io) {
 
-    var hey = new Test();
+    var canvas = document.getElementById('arena');
+    var context = canvas.getContext("2d");
 
-    hey.bla();
-}())
+    var Drawer = require('./drawer');
+    var drawer = new Drawer(context);
+
+    var looper = require('./looper')(function() {
+        console.log('yolo');
+    }, canvas);
+
+    looper.start();
+
+
+    drawer.drawCircle(200, 200, 150);
+
+    var socket = io.connect('http://localhost:8080');
+    socket.on('news', function(args) {
+        console.log(args)
+    });
+
+
+}(window, document, io))
