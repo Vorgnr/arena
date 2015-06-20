@@ -5,13 +5,13 @@
 
     var Drawer = require('./drawer');
     var drawer = new Drawer(context);
+    var inputs = require('./inputHandler')();
 
     var looper = require('./looper')(function() {
-        console.log('yolo');
+        console.log(inputs.getKeysDown().isLeftClickDown);
     }, canvas);
 
-    looper.start();
-
+    //looper.start();
 
     drawer.drawCircle(200, 200, 150);
 
