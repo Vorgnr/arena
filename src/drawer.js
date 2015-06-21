@@ -30,9 +30,19 @@ Drawer.prototype.drawPlots = function(plots) {
     }
 };
 
+Drawer.prototype.drawMapBorder = function(width, height) {
+    this.arenaContext.strokeRect(0, 0, width, height);
+};
+
+Drawer.prototype.drawMapRectangle = function(rectangles) {
+    for (var i = 0; i < rectangles.length; i++) {
+        this.arenaContext.strokeRect(rectangles[i].x, rectangles[i].y, rectangles[i].width, rectangles[i].height);
+    }
+}
+
 Drawer.prototype.translate = function(x, y) {
     this.arenaContext.translate(x, y);
-}
+};
 
 Drawer.prototype.clear = function(heroX, heroY) {
     var x = heroX - this.arenaContext.canvas.width / 2;

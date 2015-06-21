@@ -25,40 +25,31 @@
     var infoInitialPosition = { x: 32, y: 32};
 
     var update = function (keysDown, hero) {
-        //isHeroOutOfBound()
-        if (hero.x < 0) {
-            hero.x = 1;
-            return;
-        } else if (hero.y < 0) {
-            hero.y = 1
-            return;
-        }
-
         // Z - Up
-        if (90 in keysDown) {
+        if (90 in keysDown && hero.canGoUpOf(0)) {
             translateY = hero.speed;
             hero.y -= hero.speed;
         // S - Down
-        } else if (83 in keysDown) {
+        } else if (83 in keysDown && hero.canGoDownOf(map.height)) {
             translateY = -hero.speed;
             hero.y += hero.speed;
         }
         // Q - Left
-        if (81 in keysDown) {
+        if (81 in keysDown && hero.canGoLeftOf(0)) {
             translateX = hero.speed;
             hero.x -= hero.speed;
         // D - Right
-        } else if(68 in keysDown) {
+        } else if(68 in keysDown &&  hero.canGoRightOf(map.width)) {
             translateX = -hero.speed;
             hero.x += hero.speed;
         }
 
         //isHeroNearOutOfBound()
-        if (hero.x < 150)
-            translateX = 0;
+        // if (hero.x < 160 || hero.x > map.width - 160)
+        //     translateX = 0;
         
-        if(hero.y < 150)
-            translateY = 0;
+        // if(hero.y < 160 || hero.y > map.height - 160)
+        //     translateY = 0;
     };
 
     var heroReady = false;
@@ -67,7 +58,6 @@
         heroReady = true;
     };
     heroImage.src = "images/hero.png";
-    heroImage.size = 32;
 
     var bgReady = false;
     var bgImage = new Image();
@@ -78,36 +68,35 @@
 
     var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2, heroImage);
 
-    var plot = [
-      {x:50, y:100},
-      {x:200, y:200},
-      {x:400, y:300},
-      {x:500, y:190},
-      {x:600, y:25},
-      {x:700, y:433},
-      {x:800, y:900},
-      {x:433, y:854},
-      {x:255, y:633},
-      {x:675, y:848},
-      {x:500, y:233}
-    ];
+    var map = {
+        width: 1600,
+        height: 800,
+        rectangles : [
+            { x: 160, y: 160, width: 160, height: 160 },
+            { x: 160, y: 480, width: 160, height: 160 },
+            { x: 720, y: 80, width: 160, height: 640 },
+            { x: 1280, y: 160, width: 160, height: 160 },
+            { x: 1280, y: 480, width: 160, height: 160 },
+        ]
+    };
 
     var then = Date.now();
     drawer.drawBackground(bgImage);
     var main = function() {
         var now = Date.now();
         var delta = now - then;
-
         var keysDown = inputs.getKeysDown();
 
         translateX = 0;
         translateY = 0;
-        update(keysDown, hero);
         
         drawer.clear(hero.x, hero.y);
+        update(keysDown, hero);
+        
         drawer.translate(translateX, translateY);
+        drawer.drawMapBorder(map.width, map.height);
+        drawer.drawMapRectangle(map.rectangles);
         drawer.drawHero(hero);
-        drawer.drawPlots(plot);
 
         uiContext.font = "24px Helvetica";
         uiContext.textAlign = "left";
