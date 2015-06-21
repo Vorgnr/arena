@@ -1,15 +1,44 @@
 'use strict';
 
-function Drawer(context) {
-    this.context = context;
+function Drawer(arenaContext, uiContext, playerContext) {
+    this.arenaContext = arenaContext;
+    this.uiContext = uiContext;
+    this.playerContext = playerContext;
 };
 
 Drawer.prototype.drawCircle = function(x, y, rayon) {
-    this.context.beginPath();
-    this.context.arc(x, y, rayon, 0, Math.PI * 2);
-    this.context.fill();
-    this.context.closePath();
-    this.context.stroke();
+    this.arenaContext.beginPath();
+    this.arenaContext.arc(x, y, rayon, 0, Math.PI * 2);
+    this.arenaContext.fill();
+    this.arenaContext.closePath();
+    this.arenaContext.stroke();
+};
+
+Drawer.prototype.drawBackground = function(background) {
+    this.arenaContext.drawImage(background, 0, 0);
+}
+
+Drawer.prototype.drawHero = function(hero) {
+    this.arenaContext.drawImage(hero.image, hero.x, hero.y);
+};
+
+Drawer.prototype.drawPlots = function(plots) {
+    for (var i = 0; i < plots.length; i++){
+        this.arenaContext.beginPath();
+        this.arenaContext.arc(plots[i].x, plots[i].y, 5, 0, 2*Math.PI);
+        this.arenaContext.fill();
+    }
+};
+
+Drawer.prototype.translate = function(x, y) {
+    this.arenaContext.translate(x, y);
+}
+
+Drawer.prototype.clear = function(heroX, heroY) {
+    var x = heroX - this.arenaContext.canvas.width / 2;
+    var y = heroY - this.arenaContext.canvas.height / 2;
+    this.arenaContext.clearRect(x, y, this.arenaContext.canvas.width, this.arenaContext.canvas.height);
+    this.uiContext.clearRect(0, 0, 200, 100);
 };
 
 module.exports = Drawer;

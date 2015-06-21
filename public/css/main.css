@@ -1,0 +1,18 @@
+/*canvas { 
+    display: block;
+    border-style: solid;
+    border-width: 5px;
+    height: 70%; 
+    width: 70%; 
+}*/
+
+#stage {
+    width: 750px;
+    height: 400px;
+    position: relative;
+    border: 2px solid black
+  }
+
+canvas { position: absolute;}
+#arena { z-index: 1 }
+#ui { z-index: 2 }

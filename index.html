@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <h1>Arena</h1>
 
-    <canvas id="arena" width="1900" height="1000">
-        Your browser needs to support canvas for this to work!
-    </canvas>
+    <div id="stage">
+        <canvas id="ui"></canvas>
+        <!-- <canvas id="player" width="750" height="400"></canvas> -->
+        <canvas id="arena" width="750" height="400"></canvas>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="bundle.js"></script>

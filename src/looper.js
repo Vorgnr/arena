@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(task, canvas) {
+module.exports = function(task) {
     var animFrame =   window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame    ||
@@ -23,13 +23,13 @@ module.exports = function(task, canvas) {
             } else {
                 var recursiveAnim = function() {
                     task();
-                    animFrame(recursiveAnim, canvas);
+                    animFrame(recursiveAnim);
                 };
 
-                animFrame(recursiveAnim, canvas);
+                animFrame(recursiveAnim);
             }
         } else {
-            var ONE_FRAME_TIME = 1000.0 / 60.0 ;
+            var ONE_FRAME_TIME = 1000.0 / 30.0 ;
             setInterval(task, ONE_FRAME_TIME);
         }
     }

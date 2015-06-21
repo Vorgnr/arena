@@ -17,17 +17,14 @@ module.exports = function() {
     }, false);
 
     document.addEventListener("mousedown", function (e) {
-        //left click
         if (isEventLeftClick(e))
             keysDown.isLeftClickDown = true;
     });
 
     document.addEventListener("mouseup", function (e) {
-        //left click
         if (isEventLeftClick(e))
             keysDown.isLeftClickDown = false;
     });
-
 
     return {
         getKeysDown: function() {
