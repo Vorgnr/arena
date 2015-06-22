@@ -1,46 +1,20 @@
 (function(window, document, io) {
 
     var arenaCanvas = document.getElementById('arena');
-    var uiCanvas = document.getElementById('ui');
     var context = arenaCanvas.getContext("2d");
+    var uiCanvas = document.getElementById('ui');
     var uiContext = uiCanvas.getContext("2d");
-
-    // window.addEventListener('resize', resizeCanvas, false);
-
-    // function resizeCanvas() {
-    //     canvas.width = window.innerWidth;
-    //     canvas.height = window.innerHeight;
-    // }
-    // resizeCanvas();
 
     var Drawer = require('./drawer');
     var drawer = new Drawer(context, uiContext);
     var inputs = require('./inputs')();
     var Hero = require('./hero');
     
-    var translateX = 0;
-    var translateY = 0;
+    var Translation = require('./translation');
+    var translation = new Translation();
+    var map = require('./maps').first;
 
-    var update = function (keysDown, hero) {
-        // Z - Up
-        if (90 in keysDown && hero.canGoUpOf(0)) {
-            translateY = hero.speed;
-            hero.y -= hero.speed;
-        // S - Down
-        } else if (83 in keysDown && hero.canGoDownOf(map.height)) {
-            translateY = -hero.speed;
-            hero.y += hero.speed;
-        }
-        // Q - Left
-        if (81 in keysDown && hero.canGoLeftOf(0)) {
-            translateX = hero.speed;
-            hero.x -= hero.speed;
-        // D - Right
-        } else if(68 in keysDown &&  hero.canGoRightOf(map.width)) {
-            translateX = -hero.speed;
-            hero.x += hero.speed;
-        }
-    };
+    var Updater = require('./updater');
 
     var heroReady = false;
     var heroImage = new Image();
@@ -48,6 +22,8 @@
         heroReady = true;
     };
     heroImage.src = "images/hero.png";
+    var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2, heroImage);
+    var updater = new Updater(map, hero, translation);
 
     var bgReady = false;
     var bgImage = new Image();
@@ -56,31 +32,15 @@
     };
     bgImage.src = "images/bg.jpg";
 
-    var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2, heroImage);
-
-    var map = {
-        width: 1600,
-        height: 800,
-        rectangles : [
-            { x: 160, y: 160, width: 160, height: 160 },
-            { x: 160, y: 480, width: 160, height: 160 },
-            { x: 720, y: 80, width: 160, height: 640 },
-            { x: 1280, y: 160, width: 160, height: 160 },
-            { x: 1280, y: 480, width: 160, height: 160 },
-        ]
-    };
-
     drawer.drawBackground(bgImage);
     var main = function() {
         var keysDown = inputs.getKeysDown();
 
-        translateX = 0;
-        translateY = 0;
-        
+        translation.reset();
         drawer.clear(hero.x, hero.y);
-        update(keysDown, hero);
+        updater.update(keysDown, translation);
         
-        drawer.translate(translateX, translateY);
+        drawer.translate(translation.x, translation.y);
         drawer.drawMapBorder(map.width, map.height);
         drawer.drawMapRectangle(map.rectangles);
         drawer.drawHero(hero);
@@ -96,8 +56,8 @@
 
     var socket = io.connect('http://localhost:8080');
     socket.on('news', function(args) {
-        console.log(args)
+        console.log(args);
     });
 
 
-}(window, document));
+}(window, document, window.io));

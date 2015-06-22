@@ -28,4 +28,24 @@ Hero.prototype.canGoDownOf = function(y) {
     return this.y + this.size + this.speed < y
 };
 
+Hero.prototype.moveUp = function() {
+    this.y -= this.speed;
+    this.isMovingUp = true;
+};
+
+Hero.prototype.moveLeft = function() {
+    this.x -= this.speed;
+    this.isMovingLeft = true;
+};
+
+Hero.prototype.moveRight = function() {
+    this.x += this.speed;
+    this.isMovingRight = true;
+};
+
+Hero.prototype.moveDown = function() {
+    this.y += this.speed;
+    this.isMovingDown = true;
+};
+
 module.exports = Hero;
