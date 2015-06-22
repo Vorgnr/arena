@@ -2,10 +2,8 @@
 
     var arenaCanvas = document.getElementById('arena');
     var uiCanvas = document.getElementById('ui');
-    var player = document.getElementById('player');
     var context = arenaCanvas.getContext("2d");
     var uiContext = uiCanvas.getContext("2d");
-    var playerContext = ui.getContext("2d");
 
     // window.addEventListener('resize', resizeCanvas, false);
 
@@ -22,7 +20,6 @@
     
     var translateX = 0;
     var translateY = 0;
-    var infoInitialPosition = { x: 32, y: 32};
 
     var update = function (keysDown, hero) {
         // Z - Up
@@ -43,13 +40,6 @@
             translateX = -hero.speed;
             hero.x += hero.speed;
         }
-
-        //isHeroNearOutOfBound()
-        // if (hero.x < 160 || hero.x > map.width - 160)
-        //     translateX = 0;
-        
-        // if(hero.y < 160 || hero.y > map.height - 160)
-        //     translateY = 0;
     };
 
     var heroReady = false;
@@ -80,11 +70,8 @@
         ]
     };
 
-    var then = Date.now();
     drawer.drawBackground(bgImage);
     var main = function() {
-        var now = Date.now();
-        var delta = now - then;
         var keysDown = inputs.getKeysDown();
 
         translateX = 0;
@@ -113,4 +100,4 @@
     });
 
 
-}(window, document, io))
+}(window, document));

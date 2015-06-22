@@ -1,9 +1,8 @@
 'use strict';
 
-function Drawer(arenaContext, uiContext, playerContext) {
+function Drawer(arenaContext, uiContext) {
     this.arenaContext = arenaContext;
     this.uiContext = uiContext;
-    this.playerContext = playerContext;
 };
 
 Drawer.prototype.drawCircle = function(x, y, rayon) {
@@ -38,7 +37,7 @@ Drawer.prototype.drawMapRectangle = function(rectangles) {
     for (var i = 0; i < rectangles.length; i++) {
         this.arenaContext.strokeRect(rectangles[i].x, rectangles[i].y, rectangles[i].width, rectangles[i].height);
     }
-}
+};
 
 Drawer.prototype.translate = function(x, y) {
     this.arenaContext.translate(x, y);
