@@ -63,6 +63,7 @@ Drawer.prototype.clear = function(heroX, heroY) {
     var y = heroY - this.arenaContext.canvas.height / 2;
     this.arenaContext.clearRect(x, y, this.arenaContext.canvas.width, this.arenaContext.canvas.height);
     this.uiContext.clearRect(0, 0, 200, 100);
+    this.resetDebugBuffer();
 };
 
 module.exports = Drawer;
