@@ -3,6 +3,21 @@
 function Drawer(arenaContext, uiContext) {
     this.arenaContext = arenaContext;
     this.uiContext = uiContext;
+    
+    this.resetDebugBuffer();
+    this.debugFontSize = 12;
+    this.uiContext.font = this.debugFontSize.toString() + "px Helvetica";
+    this.uiContext.textAlign = "left";
+    this.uiContext.textBaseline = "top";
+};
+
+Drawer.prototype.debug = function(s) {
+    this.uiContext.fillText(s, 0, this.debugBufferPosition);
+    this.debugBufferPosition += this.debugFontSize;
+};
+
+Drawer.prototype.resetDebugBuffer = function() {
+    this.debugBufferPosition = 0;
 };
 
 Drawer.prototype.drawCircle = function(x, y, rayon) {
@@ -15,7 +30,7 @@ Drawer.prototype.drawCircle = function(x, y, rayon) {
 
 Drawer.prototype.drawBackground = function(background) {
     this.arenaContext.drawImage(background, 0, 0);
-}
+};
 
 Drawer.prototype.drawHero = function(hero) {
     this.arenaContext.drawImage(hero.image, hero.x, hero.y);

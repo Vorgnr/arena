@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-module.exports = function(task) {
+module.exports = function() {
     var animFrame =   window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame    ||
@@ -10,7 +10,7 @@ module.exports = function(task) {
 
     var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     
-    var animate = function() {
+    var animate = function(task) {
         if (animFrame !== null) {
             if (isFirefox) {
                 var recursiveAnim = function() {
@@ -32,11 +32,11 @@ module.exports = function(task) {
             var ONE_FRAME_TIME = 1000.0 / 30.0 ;
             setInterval(task, ONE_FRAME_TIME);
         }
-    }
+    };
 
     return {
-        start: function() {
-            return animate();
+        start: function(task) {
+            return animate(task);
         }
     };
 };

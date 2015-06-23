@@ -11,6 +11,7 @@
     var Translation = require('./translation');
     var map = require('./maps').first;
     var Updater = require('./updater');
+    var looper = require('./looper')();
     
     var drawer = new Drawer(context, uiContext);
     var translation = new Translation();
@@ -19,6 +20,7 @@
 
     var main = function() {
         var keysDown = inputs.getKeysDown();
+        drawer.resetDebugBuffer();
 
         translation.reset();
         drawer.clear(hero.x, hero.y);
@@ -29,14 +31,10 @@
         drawer.drawMapRectangle(map.rectangles);
         drawer.drawHero(hero);
 
-        uiContext.font = "24px Helvetica";
-        uiContext.textAlign = "left";
-        uiContext.textBaseline = "top";
-        uiContext.fillText(hero.x + " : " + hero.y, 0, 0);
+        drawer.debug(hero.x + " : " + hero.y);
     };
 
-    var looper = require('./looper')(main);
-    looper.start();
+    looper.start(main);
 
     var socket = io.connect('http://localhost:8080');
     socket.on('news', function(args) {
