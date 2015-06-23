@@ -24,7 +24,7 @@ Drawer.prototype.drawHero = function(hero) {
 Drawer.prototype.drawPlots = function(plots) {
     for (var i = 0; i < plots.length; i++){
         this.arenaContext.beginPath();
-        this.arenaContext.arc(plots[i].x, plots[i].y, 5, 0, 2*Math.PI);
+        this.arenaContext.arc(plots[i].x, plots[i].y, 5, 0, 2 * Math.PI);
         this.arenaContext.fill();
     }
 };

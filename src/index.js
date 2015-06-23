@@ -6,33 +6,17 @@
     var uiContext = uiCanvas.getContext("2d");
 
     var Drawer = require('./drawer');
-    var drawer = new Drawer(context, uiContext);
     var inputs = require('./inputs')();
     var Hero = require('./hero');
-    
     var Translation = require('./translation');
-    var translation = new Translation();
     var map = require('./maps').first;
-
     var Updater = require('./updater');
-
-    var heroReady = false;
-    var heroImage = new Image();
-    heroImage.onload = function () {
-        heroReady = true;
-    };
-    heroImage.src = "images/hero.png";
-    var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2, heroImage);
+    
+    var drawer = new Drawer(context, uiContext);
+    var translation = new Translation();
+    var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2);
     var updater = new Updater(map, hero, translation);
 
-    var bgReady = false;
-    var bgImage = new Image();
-    bgImage.onload = function () {
-        bgReady = true;
-    };
-    bgImage.src = "images/bg.jpg";
-
-    drawer.drawBackground(bgImage);
     var main = function() {
         var keysDown = inputs.getKeysDown();
 

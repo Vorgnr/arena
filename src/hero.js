@@ -1,15 +1,21 @@
 'use strict';
 
-function Hero(x, y, image) {
+function Hero(x, y) {
     this.x = x;
     this.y = y;
     this.speed = 5;
-    this.image = image;
     this.size = 32;
+    this.isReady = false;
+    
+    this.image = new Image();
+    this.image.onload = function () {
+        this.isReady = true;
+    };
+    this.image.src = "images/hero.png";
 };
 
 Hero.prototype.isOutOfRectangle = function(x, y, width, height) {
-    return this.x < x || this.y < y || this.x + this.size > x + width || this.y + size > y + height;
+    return this.x < x || this.y < y || this.x + this.size > x + width || this.y + this.size > y + height;
 };
 
 Hero.prototype.canGoLeftOf = function(x) {
@@ -21,11 +27,11 @@ Hero.prototype.canGoUpOf = function(y) {
 };
 
 Hero.prototype.canGoRightOf = function(x) {
-    return this.x + this.size + this.speed < x
+    return this.x + this.size + this.speed < x;
 };
 
 Hero.prototype.canGoDownOf = function(y) {
-    return this.y + this.size + this.speed < y
+    return this.y + this.size + this.speed < y;
 };
 
 Hero.prototype.moveUp = function() {
