@@ -18,11 +18,14 @@
     var camera = new Camera(0, 0, arenaCanvas.width, arenaCanvas.height);
     var updater = new Updater(map, hero, camera);
 
+    var end = 0;
     var main = function() {
+        var start = new Date().getTime();
         var keysDown = inputs.getKeysDown();
 
         camera.init();
         drawer.clear(hero.x, hero.y);
+        drawer.debug(start - end + " ms");
         updater.update(keysDown, camera);
         
         drawer.translate(camera.translationX, camera.translationY);
@@ -32,10 +35,8 @@
 
         drawer.debug(hero.x + " : " + hero.y);
         drawer.debug(camera.x + " : " + camera.y);
-        var visibleObject = updater.getMapObjectsVisibleByCamera();
-        visibleObject.forEach(function(o) {
-            drawer.debug(o.tag);
-        });
+        end = new Date().getTime();
+        drawer.debug(end - start + " ms");
     };
 
     looper.start(main);
