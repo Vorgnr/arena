@@ -32,10 +32,6 @@
 
         drawer.debug(hero.x + " : " + hero.y);
         drawer.debug(camera.x + " : " + camera.y);
-        var visibleObject = updater.getMapObjectsVisibleByCamera();
-        visibleObject.forEach(function(o) {
-            drawer.debug(o.tag);
-        });
     };
 
     looper.start(main);
