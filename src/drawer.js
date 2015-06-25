@@ -32,8 +32,16 @@ Drawer.prototype.drawBackground = function(background) {
     this.arenaContext.drawImage(background, 0, 0);
 };
 
-Drawer.prototype.drawHero = function(hero) {
-    this.arenaContext.drawImage(hero.image, hero.x, hero.y);
+Drawer.prototype.drawHero = function(hero, image) {
+    if (typeof image === "undefined")
+        image = hero.image;
+    
+    this.arenaContext.drawImage(image, hero.x, hero.y);
+};
+
+Drawer.prototype.drawHeroes = function(heroes, image) {
+    for (var i in heroes)
+        this.drawHero(heroes[i], image);
 };
 
 Drawer.prototype.drawPlots = function(plots) {

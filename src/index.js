@@ -1,4 +1,6 @@
 (function(window, document, io) {
+    
+    var socket = io.connect('http://localhost:8080');
 
     var arenaCanvas = document.getElementById('arena');
     var context = arenaCanvas.getContext("2d");
@@ -17,6 +19,7 @@
     var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2);
     var camera = new Camera(0, 0, arenaCanvas.width, arenaCanvas.height);
     var updater = new Updater(map, hero, camera);
+    var heroes = {};
 
     var end = 0;
     var main = function() {
@@ -27,11 +30,13 @@
         drawer.clear(hero.x, hero.y);
         drawer.debug(start - end + " ms");
         updater.update(keysDown, camera);
+        socket.emit('updateHero', hero);
         
         drawer.translate(camera.translationX, camera.translationY);
         drawer.drawMapBorder(map.width, map.height);
         drawer.drawMapRectangle(map.rectangles);
         drawer.drawHero(hero);
+        drawer.drawHeroes(heroes, hero.image);
 
         drawer.debug(hero.x + " : " + hero.y);
         drawer.debug(camera.x + " : " + camera.y);
@@ -41,9 +46,8 @@
 
     looper.start(main);
 
-    var socket = io.connect('http://localhost:8080');
-    socket.on('news', function(args) {
-        //console.log(args);
+    socket.on('updatedHero', function(data) {
+        heroes[data.id] = data.hero;
     });
 
 

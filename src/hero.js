@@ -4,7 +4,7 @@ function Hero(x, y) {
     this.x = x;
     this.y = y;
     this.speed = 5;
-    this.size = 32;
+    this.size = 30;
     this.isReady = false;
     
     this.image = new Image();
@@ -52,6 +52,55 @@ Hero.prototype.moveRight = function() {
 Hero.prototype.moveDown = function() {
     this.y += this.speed;
     this.isMovingDown = true;
+};
+
+Hero.prototype.isCollideWithObjectFromAbove = function(o) {
+    return o.y <= this.y + this.speed + this.size 
+        && this.y + this.speed <= o.y + o.height
+        && o.x < this.x + this.size && this.x < o.x + o.width;
+};
+
+Hero.prototype.isCollideWithObjectFromBelow = function(o) {
+    return o.y + o.height > this.y - this.speed
+        && this.y + this.size > o.y
+        && o.x < this.x + this.size && this.x < o.x + o.width;
+};
+
+Hero.prototype.isCollideWithObjectFromRight = function(o) {
+    return o.x + o.width > this.x - this.speed &&
+        this.x - this.speed > o.x &&
+        o.y < this.y + this.size &&
+        this.y < o.y + o.height;
+};
+
+Hero.prototype.isCollideWithObjectFromLeft = function(o) {
+    return o.x < this.x + this.speed + this.size &&
+        this.x + this.speed < o.x + o.width &&
+        o.y < this.y + this.size && this.y < o.y + o.height;
+};
+
+Hero.prototype.isCollideWithObjectsFromRight = function(objects) {
+    return objects.every(function(o) {
+        return !this.isCollideWithObjectFromRight(o);
+    }.bind(this));
+};
+
+Hero.prototype.isCollideWithObjectsFromLeft = function(objects) {
+    return objects.every(function(o) {
+        return !this.isCollideWithObjectFromLeft(o);
+    }.bind(this));
+};
+
+Hero.prototype.isCollideWithObjectsFromBelow = function(objects) {
+    return objects.every(function(o) {
+        return !this.isCollideWithObjectFromBelow(o);
+    }.bind(this));
+};
+
+Hero.prototype.isCollideWithObjectsFromAbove = function(objects) {
+    return objects.every(function(o) {
+        return !this.isCollideWithObjectFromAbove(o);
+    }.bind(this));
 };
 
 module.exports = Hero;

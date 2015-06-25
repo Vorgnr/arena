@@ -14,8 +14,13 @@ var users = [];
 
 io.on('connection', function (socket) {
     users.push(socket.id);
-
-    socket.emit('news', { users: users });
+    
+    socket.on('updateHero', function(hero) {
+        socket.broadcast.emit('updatedHero', { 
+            id: socket.id,
+            hero: hero 
+        });
+    });
 
     socket.on('disconnect', function() {
         var index = users.indexOf(socket.id);
