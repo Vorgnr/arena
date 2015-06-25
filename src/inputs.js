@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = function() {
     var keysDown = {};
@@ -6,6 +6,14 @@ module.exports = function() {
 
     var isEventLeftClick = function(e) {
         return e.which === 1;
+    };
+    
+    var reset = function() {
+        keysDown = {};
+    };
+        
+    window.onblur = function() {
+       reset();
     };
 
     document.addEventListener("keydown", function (e) {
@@ -19,6 +27,8 @@ module.exports = function() {
     document.addEventListener("mousedown", function (e) {
         if (isEventLeftClick(e))
             keysDown.isLeftClickDown = true;
+        else
+            reset();  // Because Right click is annoying
     });
 
     document.addEventListener("mouseup", function (e) {

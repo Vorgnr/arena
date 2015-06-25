@@ -50,5 +50,4 @@
         heroes[data.id] = data.hero;
     });
 
-
 }(window, document, window.io));
