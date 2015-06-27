@@ -15,6 +15,8 @@ Updater.prototype.getMapObjectsVisibleByCamera = function() {
 Updater.prototype.update = function (keysDown) {
     var visibleObjects = this.getMapObjectsVisibleByCamera();
 
+    var previousHeroMouvementState = this.hero.movementState();
+    this.hero.resetMovementState();
     
     // Z - Up
     if (90 in keysDown && this.hero.canGoUpOf(0) && this.hero.isCollideWithObjectsFromBelow(visibleObjects)) {
@@ -33,6 +35,26 @@ Updater.prototype.update = function (keysDown) {
     } else if(68 in keysDown &&  this.hero.canGoRightOf(this.map.width) && this.hero.isCollideWithObjectsFromLeft(visibleObjects)) {
         this.hero.moveRight();
         this.camera.moveRight(this.hero.speed);
+    }
+    
+    //is Hero's state changed
+    if(previousHeroMouvementState.toString() !== this.hero.movementState().toString())
+        this.hero.isMovingStateChanged = true;
+};
+
+Updater.prototype.updateOtherHeroes = function (heroes) { 
+    for (var i in heroes) {
+        if (heroes[i].isMovingUp) {
+            heroes[i].y -= heroes[i].speed;
+        } else if (heroes[i].isMovingDown) {
+            heroes[i].y += heroes[i].speed;
+        }
+         
+         if (heroes[i].isMovingLeft) {
+            heroes[i].x -= heroes[i].speed;
+         } else if (heroes[i].isMovingRight) {
+            heroes[i].x += heroes[i].speed;
+         }
     }
 };
 

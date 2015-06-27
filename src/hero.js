@@ -6,6 +6,7 @@ function Hero(x, y) {
     this.speed = 5;
     this.size = 30;
     this.isReady = false;
+    this.resetMovementState();
     
     this.image = new Image();
     this.image.onload = function () {
@@ -52,6 +53,18 @@ Hero.prototype.moveRight = function() {
 Hero.prototype.moveDown = function() {
     this.y += this.speed;
     this.isMovingDown = true;
+};
+
+Hero.prototype.resetMovementState = function() {
+    this.isMovingDown = false;
+    this.isMovingUp = false;
+    this.isMovingLeft = false;
+    this.isMovingRight = false;
+    this.isMovingStateChanged = false;
+};
+
+Hero.prototype.movementState = function() {
+    return [this.isMovingUp, this.isMovingRight, this.isMovingLeft, this.isMovingDown];
 };
 
 Hero.prototype.isCollideWithObjectFromAbove = function(o) {

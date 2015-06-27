@@ -30,16 +30,18 @@
         drawer.clear(hero.x, hero.y);
         drawer.debug(start - end + " ms");
         updater.update(keysDown, camera);
-        socket.emit('updateHero', hero);
+        updater.updateOtherHeroes(heroes);
+        if (hero.isMovingStateChanged)
+            socket.emit('updateHero', hero);
         
         drawer.translate(camera.translationX, camera.translationY);
         drawer.drawMapBorder(map.width, map.height);
         drawer.drawMapRectangle(map.rectangles);
         drawer.drawHero(hero);
         drawer.drawHeroes(heroes, hero.image);
-
+        
         drawer.debug(hero.x + " : " + hero.y);
-        drawer.debug(camera.x + " : " + camera.y);
+        drawer.debug(heroes[0]);
         end = new Date().getTime();
         drawer.debug(end - start + " ms");
     };
