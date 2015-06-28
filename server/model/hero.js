@@ -58,7 +58,7 @@ Hero.prototype.resetMovementState = function() {
 };
 
 Hero.prototype.movementState = function() {
-    return [this.isMovingUp, this.isMovingRight, this.isMovingLeft, this.isMovingDown];
+    return [this.isMovingUp, this.isMovingRight, this.isMovingDown, this.isMovingLeft];
 };
 
 Hero.prototype.isCollideWithObjectFromAbove = function(o) {

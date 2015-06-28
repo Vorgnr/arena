@@ -107,4 +107,66 @@ describe('Hero', function(){
       hero.x.should.equal(xBeforeMoving + hero.speed);
     });
   });
+  
+  describe('#movementState()', function() {
+    
+    beforeEach(function(){
+      hero.resetMovementState();
+    });
+    
+    context('when hero state has been reseted', function() {
+      it('mouvement state should be corect', function() {
+        hero.movementState().toString().should.equal([false, false, false, false].toString());
+      });
+    });
+    
+    context('when hero is moving up', function() {
+      it('mouvement state should be corect', function() {
+        hero.moveUp();
+        hero.movementState().toString().should.equal([true, false, false, false].toString());
+      });
+    });
+    
+    context('when hero is moving right', function() {
+      it('mouvement state should be corect', function() {
+        hero.moveRight();
+        hero.movementState().toString().should.equal([false, true, false, false].toString());
+      });
+    });
+
+    context('when hero is moving down', function() {
+      it('mouvement state should be corect', function() {
+        hero.moveDown();
+        hero.movementState().toString().should.equal([false, false, true, false].toString());
+      });
+    });
+    
+    context('when hero is moving left', function() {
+      it('mouvement state should be corect', function() {
+        hero.moveLeft();
+        hero.movementState().toString().should.equal([false, false, false, true].toString());
+      });
+    });        
+  });
+  
+  describe('#canGoLeftOf()', function() {
+    
+    beforeEach(function(){
+      hero.speed = 5;
+    });
+    
+    context('when miminum x is reached', function() {
+      it('should return false', function() {
+        hero.x = 0;
+        hero.canGoLeftOf(0).should.be.false;
+      });
+    });
+    
+    context('when miminum x is not reached yet', function() {
+      it('should return true', function() {
+        hero.x = 10;
+        hero.canGoLeftOf(0).should.be.true;
+      });
+    });
+  });
 });
