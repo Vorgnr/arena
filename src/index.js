@@ -21,15 +21,19 @@
     var updater = new Updater(map, hero, camera);
     var heroes = {};
 
-    var end = 0;
+    var deltaTime, lastframetime = 0.016;
+    var elapsedTime = 1;
+    
     var main = function() {
         var start = new Date().getTime();
+        elapsedTime = start - lastframetime;
+        deltaTime = elapsedTime / 1000.0;
+        lastframetime = start;
+        
         var keysDown = inputs.getKeysDown();
-
         camera.init();
         drawer.clear(hero.x, hero.y);
-        drawer.debug(start - end + " ms");
-        updater.update(keysDown, camera);
+        updater.update(keysDown, deltaTime);
         updater.updateOtherHeroes(heroes);
         if (hero.isMovingStateChanged)
             socket.emit('updateHero', hero);
@@ -41,9 +45,8 @@
         drawer.drawHeroes(heroes, hero.image);
         
         drawer.debug(hero.x + " : " + hero.y);
-        drawer.debug(heroes[0]);
-        end = new Date().getTime();
-        drawer.debug(end - start + " ms");
+        drawer.debug(elapsedTime + " ms");
+        drawer.debug(deltaTime);
     };
 
     looper.start(main);
