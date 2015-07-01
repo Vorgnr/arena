@@ -19,8 +19,6 @@
     var hero = new Hero(arenaCanvas.width / 2, arenaCanvas.height / 2);
     var camera = new Camera(0, 0, arenaCanvas.width, arenaCanvas.height);
     var updater = new Updater(map, hero, camera);
-    var looper = new Looper();
-    
     var heroes = {};
     
     var main = function() {
@@ -42,6 +40,7 @@
         drawer.debug(this.deltaTime);
     };
 
+    var looper = new Looper(main);
     looper.start(main, new Date().getTime());
 
     socket.on('updatedHero', function(data) {

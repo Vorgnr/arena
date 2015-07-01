@@ -1,6 +1,8 @@
 'use strict';
 
-function Looper() {}
+function Looper(task) {
+    this.task = task;
+}
 
 (function () {
 
@@ -28,13 +30,11 @@ function Looper() {}
 
 }());
 
-Looper.prototype.start = function(callback, time) {
-    this.deltaTime = this.lastFrametime ? ( (time - this.lastframetime)/1000.0) : 0.016;
-    this.lastframetime = time;
-    if (!this.callback)
-        this.callback = callback;
+Looper.prototype.start = function(time) {
+    this.deltaTime = this.lastFrametime ? ((time - this.lastFrametime) / 1000.0 ).toFixed(3) : 0.016;
+    this.lastFrametime = time;
         
-    this.callback();
+    this.task();
     this.id = window.requestAnimationFrame(this.start.bind(this));
 };
 
