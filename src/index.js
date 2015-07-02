@@ -37,7 +37,6 @@
         drawer.drawHeroes(heroes, hero.image);
         
         drawer.debug(hero.x + " : " + hero.y);
-        drawer.debug(this.deltaTime);
     };
 
     var looper = new Looper(main);

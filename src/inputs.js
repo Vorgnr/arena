@@ -2,6 +2,21 @@
 
 module.exports = function() {
     var keysDown = {};
+    
+    var inputs = {
+        "Up": [90],
+        "Right": [68],
+        "Down": [83],
+        "Left": [81],
+    };
+    
+    var keyCodeToAction = function(code) {
+      for(var i in inputs) {
+          if (~inputs[i].indexOf(code)) return i;
+      };
+      return undefined;
+    };
+    
     keysDown.isLeftClickDown = false;
 
     var isEventLeftClick = function(e) {
@@ -17,11 +32,13 @@ module.exports = function() {
     };
 
     document.addEventListener("keydown", function (e) {
-        keysDown[e.keyCode] = true;
+        var action = keyCodeToAction(e.keyCode);
+        if (action) keysDown[action] = true;
     }, false);
 
     document.addEventListener("keyup", function (e) {
-        delete keysDown[e.keyCode];
+        var action = keyCodeToAction(e.keyCode);
+        if (action) delete keysDown[action];
     }, false);
 
     document.addEventListener("mousedown", function (e) {

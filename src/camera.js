@@ -18,6 +18,12 @@ Camera.prototype.isObjectVisibleByCamera = function(o) {
 	return true;
 };
 
+Camera.prototype.getVisiblesObjectsByCamera = function(objects) {
+    return objects.filter(function(r) {
+        return this.isObjectVisibleByCamera(r);
+    }.bind(this));
+};
+
 Camera.prototype.moveUp = function(speed) {
 	this.translationY = speed;
 	this.y -= speed;
