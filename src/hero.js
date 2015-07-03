@@ -3,6 +3,8 @@
 function Hero(x, y) {
     this.x = x;
     this.y = y;
+    this.vectorX = 1;
+    this.vectorY = 1;
     this.speed = 5;
     this.size = 30;
     this.isReady = false;
@@ -35,27 +37,35 @@ Hero.prototype.canGoDownOf = function(y) {
     return this.y + this.size + this.speed < y;
 };
 
-Hero.prototype.moveUp = function(deltaTime) {
-    this.y -= Math.round(this.speed * deltaTime);
+Hero.prototype.move = function(deltaTime) {
+    var pixelPerMs = Math.round(this.speed * deltaTime);
+    this.x += pixelPerMs * this.vectorX;
+    this.y += pixelPerMs * this.vectorY;
+};
+
+Hero.prototype.turnUp = function(deltaTime) {
+    this.vectorY = -1;
     this.isMovingUp = true;
 };
 
-Hero.prototype.moveLeft = function(deltaTime) {
-    this.x -= Math.round(this.speed * deltaTime);
+Hero.prototype.turnLeft = function(deltaTime) {
+    this.vectorX = -1;
     this.isMovingLeft = true;
 };
 
-Hero.prototype.moveRight = function(deltaTime) {
-    this.x += Math.round(this.speed * deltaTime);
+Hero.prototype.turnRight = function(deltaTime) {
+    this.vectorX = 1;
     this.isMovingRight = true;
 };
 
-Hero.prototype.moveDown = function(deltaTime) {
-    this.y += Math.round(this.speed * deltaTime);
+Hero.prototype.turnDown = function(deltaTime) {
+    this.vectorY = 1;
     this.isMovingDown = true;
 };
 
 Hero.prototype.resetMovementState = function() {
+    this.vectorX = 0;
+    this.vectorY = 0;
     this.isMovingDown = false;
     this.isMovingUp = false;
     this.isMovingLeft = false;
@@ -114,6 +124,10 @@ Hero.prototype.isCollideWithObjectsFromAbove = function(objects) {
     return objects.every(function(o) {
         return !this.isCollideWithObjectFromAbove(o);
     }.bind(this));
+};
+
+Hero.prototype.canMoveUp = function(y, objects) {
+    return this.canGoUpOf(y) && this.isCollideWithObjectsFromBelow(objects);
 };
 
 module.exports = Hero;

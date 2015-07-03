@@ -10,6 +10,8 @@ function Camera(x, y, width, height) {
 Camera.prototype.init = function() {
 	this.translationX = 0;
 	this.translationY = 0;
+	this.vectorX = 0;
+	this.vectorY = 0;
 };
 
 Camera.prototype.isObjectVisibleByCamera = function(o) {
@@ -18,30 +20,22 @@ Camera.prototype.isObjectVisibleByCamera = function(o) {
 	return true;
 };
 
+Camera.prototype.follow = function(vectorX, vectorY) {
+	this.vectorX = vectorX;
+	this.vectorY = vectorY;
+};
+
+Camera.prototype.move = function(speed) {
+	this.translationX = - this.vectorX * speed;
+	this.translationY = - this.vectorY * speed;
+	this.x += speed * this.vectorX;
+	this.y += speed * this.vectorY;
+};
+
 Camera.prototype.getVisiblesObjectsByCamera = function(objects) {
     return objects.filter(function(r) {
         return this.isObjectVisibleByCamera(r);
     }.bind(this));
-};
-
-Camera.prototype.moveUp = function(speed) {
-	this.translationY = speed;
-	this.y -= speed;
-};
-
-Camera.prototype.moveDown = function(speed) {
-	this.translationY = -speed;
-	this.y += speed;
-};
-
-Camera.prototype.moveLeft = function(speed) {
-	this.translationX = speed;
-	this.x -= speed;
-};
-
-Camera.prototype.moveRight = function(speed) {
-	this.translationX = -speed;
-	this.x += speed;
 };
 
 module.exports = Camera;

@@ -6,25 +6,21 @@ function Updater(map, hero, camera) {
     this.camera = camera;
 }
 
-var handleMoveUpOrDown = function(keysDown, deltaTime, visibleObjects) {
-    if ("Up" in keysDown && this.hero.canGoUpOf(0) && this.hero.isCollideWithObjectsFromBelow(visibleObjects)) {
-        this.hero.moveUp(deltaTime);
-        this.camera.moveUp(this.hero.speed * deltaTime);
-    // S - Down
-    } else if ("Down" in keysDown && this.hero.canGoDownOf(this.map.height) && this.hero.isCollideWithObjectsFromAbove(visibleObjects)) {
-        this.hero.moveDown(deltaTime);
-        this.camera.moveDown(this.hero.speed * deltaTime);
-    }
+var handleHeroDirection = function(keysDown, deltaTime, visibleObjects) {
+    if ("Up" in keysDown) this.hero.turnUp();
+    else if ("Down" in keysDown) this.hero.turnDown();
+    
+    if ("Left" in keysDown) this.hero.turnLeft();
+    else if ("Right" in keysDown) this.hero.turnRight();
+
 };
 
-var handleMoveLeftOrRight = function(keysDown, deltaTime, visibleObjects) {
-    if ("Left" in keysDown && this.hero.canGoLeftOf(0) && this.hero.isCollideWithObjectsFromRight(visibleObjects)) {
-        this.hero.moveLeft(deltaTime);
-        this.camera.moveLeft(this.hero.speed * deltaTime);
-    // D- Right
-    } else if("Right" in keysDown &&  this.hero.canGoRightOf(this.map.width) && this.hero.isCollideWithObjectsFromLeft(visibleObjects)) {
-        this.hero.moveRight(deltaTime);
-        this.camera.moveRight(this.hero.speed * deltaTime);
+var handleHeroMovement = function(keysDown, deltaTime, visibleObjects) {
+    
+    if (this.hero.vectorX || this.hero.vectorY) {
+        this.hero.move(deltaTime);
+        this.camera.follow(this.hero.vectorX, this.hero.vectorY);
+        this.camera.move(this.hero.speed * deltaTime);
     }
 };
 
@@ -34,8 +30,8 @@ Updater.prototype.update = function (keysDown, deltaTime) {
     var previousHeroMouvementState = this.hero.movementState();
     this.hero.resetMovementState();
     
-    handleMoveUpOrDown.bind(this)(keysDown, deltaTime, visibleObjects);
-    handleMoveLeftOrRight.bind(this)(keysDown, deltaTime, visibleObjects);
+    handleHeroDirection.bind(this)(keysDown, deltaTime, visibleObjects);
+    handleHeroMovement.bind(this)(keysDown, deltaTime, visibleObjects);
     
     //is Hero's state changed
     if(previousHeroMouvementState.toString() !== this.hero.movementState().toString())
