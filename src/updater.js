@@ -6,7 +6,7 @@ function Updater(map, hero, camera) {
     this.camera = camera;
 }
 
-var handleHeroDirection = function(keysDown, deltaTime, visibleObjects) {
+var handleHeroDirection = function(keysDown) {
     if ("Up" in keysDown) this.hero.turnUp();
     else if ("Down" in keysDown) this.hero.turnDown();
     
@@ -15,12 +15,12 @@ var handleHeroDirection = function(keysDown, deltaTime, visibleObjects) {
 
 };
 
-var handleHeroMovement = function(keysDown, deltaTime, visibleObjects) {
-    
+var handleHeroMovement = function(visibleObjects) {
+    //TODO handle collisions
     if (this.hero.vectorX || this.hero.vectorY) {
-        this.hero.move(deltaTime);
+        this.hero.move();
         this.camera.follow(this.hero.vectorX, this.hero.vectorY);
-        this.camera.move(this.hero.speed * deltaTime);
+        this.camera.move(this.hero.pixelPerS);
     }
 };
 
@@ -28,10 +28,10 @@ Updater.prototype.update = function (keysDown, deltaTime) {
     var visibleObjects = this.camera.getVisiblesObjectsByCamera(this.map.rectangles);
 
     var previousHeroMouvementState = this.hero.movementState();
-    this.hero.resetMovementState();
+    this.hero.resetMovementState(deltaTime);
     
-    handleHeroDirection.bind(this)(keysDown, deltaTime, visibleObjects);
-    handleHeroMovement.bind(this)(keysDown, deltaTime, visibleObjects);
+    handleHeroDirection.bind(this)(keysDown);
+    handleHeroMovement.bind(this)(visibleObjects);
     
     //is Hero's state changed
     if(previousHeroMouvementState.toString() !== this.hero.movementState().toString())

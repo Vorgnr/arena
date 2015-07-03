@@ -22,48 +22,50 @@ Hero.prototype.isOutOfRectangle = function(x, y, width, height) {
 };
 
 Hero.prototype.canGoLeftOf = function(x) {
-    return this.x - this.speed >= x;
+    return this.x - this.pixelPerS >= x;
 };
 
 Hero.prototype.canGoUpOf = function(y) {
-    return this.y - this.speed >= y;
+    return this.y - this.pixelPerS >= y;
 };
 
 Hero.prototype.canGoRightOf = function(x) {
-    return this.x + this.size + this.speed < x;
+    return this.x + this.size + this.pixelPerS < x;
 };
 
 Hero.prototype.canGoDownOf = function(y) {
-    return this.y + this.size + this.speed < y;
+    return this.y + this.size + this.pixelPerS < y;
 };
 
-Hero.prototype.move = function(deltaTime) {
-    var pixelPerMs = Math.round(this.speed * deltaTime);
-    this.x += pixelPerMs * this.vectorX;
-    this.y += pixelPerMs * this.vectorY;
+Hero.prototype.move = function() {
+    
+    this.x += this.pixelPerS * this.vectorX;
+    this.y += this.pixelPerS * this.vectorY;
 };
 
-Hero.prototype.turnUp = function(deltaTime) {
+Hero.prototype.turnUp = function() {
     this.vectorY = -1;
     this.isMovingUp = true;
 };
 
-Hero.prototype.turnLeft = function(deltaTime) {
+Hero.prototype.turnLeft = function() {
     this.vectorX = -1;
     this.isMovingLeft = true;
 };
 
-Hero.prototype.turnRight = function(deltaTime) {
+Hero.prototype.turnRight = function() {
     this.vectorX = 1;
     this.isMovingRight = true;
 };
 
-Hero.prototype.turnDown = function(deltaTime) {
+Hero.prototype.turnDown = function() {
     this.vectorY = 1;
     this.isMovingDown = true;
 };
 
-Hero.prototype.resetMovementState = function() {
+Hero.prototype.resetMovementState = function(deltaTime) {
+    this.deltaTime = deltaTime;
+    this.pixelPerS = Math.round(this.speed * this.deltaTime);
     this.vectorX = 0;
     this.vectorY = 0;
     this.isMovingDown = false;
@@ -78,27 +80,27 @@ Hero.prototype.movementState = function() {
 };
 
 Hero.prototype.isCollideWithObjectFromAbove = function(o) {
-    return o.y <= this.y + this.speed + this.size 
-        && this.y + this.speed <= o.y + o.height
+    return o.y <= this.y + this.pixelPerS + this.size 
+        && this.y + this.pixelPerS <= o.y + o.height
         && o.x < this.x + this.size && this.x < o.x + o.width;
 };
 
 Hero.prototype.isCollideWithObjectFromBelow = function(o) {
-    return o.y + o.height > this.y - this.speed
+    return o.y + o.height > this.y - this.pixelPerS
         && this.y + this.size > o.y
         && o.x < this.x + this.size && this.x < o.x + o.width;
 };
 
 Hero.prototype.isCollideWithObjectFromRight = function(o) {
-    return o.x + o.width > this.x - this.speed &&
-        this.x - this.speed > o.x &&
+    return o.x + o.width > this.x - this.pixelPerS &&
+        this.x - this.pixelPerS > o.x &&
         o.y < this.y + this.size &&
         this.y < o.y + o.height;
 };
 
 Hero.prototype.isCollideWithObjectFromLeft = function(o) {
-    return o.x < this.x + this.speed + this.size &&
-        this.x + this.speed < o.x + o.width &&
+    return o.x < this.x + this.pixelPerS + this.size &&
+        this.x + this.pixelPerS < o.x + o.width &&
         o.y < this.y + this.size && this.y < o.y + o.height;
 };
 
