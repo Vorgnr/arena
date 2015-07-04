@@ -26,7 +26,7 @@
         camera.init();
         drawer.clear(hero.x, hero.y);
         updater.update(keysDown, 1);
-        updater.updateOtherHeroes(heroes);
+        updater.updateOthersHeroes(heroes);
         if (hero.isMovingStateChanged)
             socket.emit('updateHero', hero);
         
@@ -37,10 +37,11 @@
         drawer.drawHeroes(heroes, hero.image);
         
         drawer.debug(hero.x + " : " + hero.y);
+        drawer.debug(this.deltaTime);
     };
 
     var looper = new Looper(main);
-    looper.start(main, new Date().getTime());
+    looper.start(new Date().getTime());
 
     socket.on('updatedHero', function(data) {
         heroes[data.id] = data.hero;

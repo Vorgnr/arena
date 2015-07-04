@@ -1,5 +1,7 @@
 'use strict';
 
+var Hero = require('./hero')
+
 function Updater(map, hero, camera) {
 	this.map = map;
 	this.hero = hero;
@@ -15,7 +17,6 @@ var handleHeroDirection = function(keysDown) {
 };
 
 var handleHeroMovement = function(visibleObjects) {
-    //TODO handle collisions
     if (this.hero.canMove(0, 0, this.map.width, this.map.height, visibleObjects)) {
         this.hero.move();
         this.camera.follow(this.hero.vectorX, this.hero.vectorY);
@@ -37,19 +38,9 @@ Updater.prototype.update = function (keysDown, deltaTime) {
         this.hero.isMovingStateChanged = true;
 };
 
-Updater.prototype.updateOtherHeroes = function (heroes) { 
+Updater.prototype.updateOthersHeroes = function (heroes) { 
     for (var i in heroes) {
-        if (heroes[i].isMovingUp) {
-            heroes[i].y -= heroes[i].speed;
-        } else if (heroes[i].isMovingDown) {
-            heroes[i].y += heroes[i].speed;
-        }
-         
-         if (heroes[i].isMovingLeft) {
-            heroes[i].x -= heroes[i].speed;
-         } else if (heroes[i].isMovingRight) {
-            heroes[i].x += heroes[i].speed;
-         }
+        Hero.prototype.move.call(heroes[i]);
     }
 };
 
