@@ -12,12 +12,11 @@ var handleHeroDirection = function(keysDown) {
     
     if ("Left" in keysDown) this.hero.turnLeft();
     else if ("Right" in keysDown) this.hero.turnRight();
-
 };
 
 var handleHeroMovement = function(visibleObjects) {
     //TODO handle collisions
-    if (this.hero.vectorX || this.hero.vectorY) {
+    if (this.hero.canMove(0, 0, this.map.width, this.map.height, visibleObjects)) {
         this.hero.move();
         this.camera.follow(this.hero.vectorX, this.hero.vectorY);
         this.camera.move(this.hero.pixelPerS);

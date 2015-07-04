@@ -38,29 +38,24 @@ Hero.prototype.canGoDownOf = function(y) {
 };
 
 Hero.prototype.move = function() {
-    
     this.x += this.pixelPerS * this.vectorX;
     this.y += this.pixelPerS * this.vectorY;
 };
 
 Hero.prototype.turnUp = function() {
     this.vectorY = -1;
-    this.isMovingUp = true;
 };
 
 Hero.prototype.turnLeft = function() {
     this.vectorX = -1;
-    this.isMovingLeft = true;
 };
 
 Hero.prototype.turnRight = function() {
     this.vectorX = 1;
-    this.isMovingRight = true;
 };
 
 Hero.prototype.turnDown = function() {
     this.vectorY = 1;
-    this.isMovingDown = true;
 };
 
 Hero.prototype.resetMovementState = function(deltaTime) {
@@ -68,15 +63,11 @@ Hero.prototype.resetMovementState = function(deltaTime) {
     this.pixelPerS = Math.round(this.speed * this.deltaTime);
     this.vectorX = 0;
     this.vectorY = 0;
-    this.isMovingDown = false;
-    this.isMovingUp = false;
-    this.isMovingLeft = false;
-    this.isMovingRight = false;
     this.isMovingStateChanged = false;
 };
 
 Hero.prototype.movementState = function() {
-    return [this.isMovingUp, this.isMovingRight, this.isMovingLeft, this.isMovingDown];
+    return [this.vectorX, this.vectorY];
 };
 
 Hero.prototype.isCollideWithObjectFromAbove = function(o) {
@@ -104,32 +95,45 @@ Hero.prototype.isCollideWithObjectFromLeft = function(o) {
         o.y < this.y + this.size && this.y < o.y + o.height;
 };
 
-Hero.prototype.isCollideWithObjectsFromRight = function(objects) {
+Hero.prototype.isCollideWithObjects = function(objects, filter) {
     return objects.every(function(o) {
-        return !this.isCollideWithObjectFromRight(o);
+        return !filter.bind(this)(o);
     }.bind(this));
 };
 
-Hero.prototype.isCollideWithObjectsFromLeft = function(objects) {
-    return objects.every(function(o) {
-        return !this.isCollideWithObjectFromLeft(o);
-    }.bind(this));
-};
-
-Hero.prototype.isCollideWithObjectsFromBelow = function(objects) {
-    return objects.every(function(o) {
-        return !this.isCollideWithObjectFromBelow(o);
-    }.bind(this));
-};
-
-Hero.prototype.isCollideWithObjectsFromAbove = function(objects) {
-    return objects.every(function(o) {
-        return !this.isCollideWithObjectFromAbove(o);
-    }.bind(this));
+Hero.prototype.canMove = function(x, y, w, h, objects) {
+    var canMoveUpOrDown = false;
+    if (this.vectorY === -1)
+        canMoveUpOrDown = this.canMoveUp(y, objects);
+    else if (this.vectorY === 1)
+        canMoveUpOrDown = this.canMoveDown(h, objects);
+        
+    var canMoveLeftOrRight = false;
+    if (this.vectorX === -1)
+        canMoveLeftOrRight = this.canMoveLeft(x, objects);
+    else if (this.vectorX === 1)
+        canMoveLeftOrRight = this.canMoveRight(w, objects);
+        
+    if (!canMoveUpOrDown) this.vectorY = 0;
+    if (!canMoveLeftOrRight) this.vectorX = 0;
+        
+    return canMoveUpOrDown || canMoveLeftOrRight;
 };
 
 Hero.prototype.canMoveUp = function(y, objects) {
-    return this.canGoUpOf(y) && this.isCollideWithObjectsFromBelow(objects);
+    return this.canGoUpOf(y) && this.isCollideWithObjects(objects, this.isCollideWithObjectFromBelow);
+};
+
+Hero.prototype.canMoveDown = function(y, objects) {
+    return this.canGoDownOf(y) && this.isCollideWithObjects(objects, this.isCollideWithObjectFromAbove);
+};
+
+Hero.prototype.canMoveLeft = function(x, objects) {
+    return this.canGoLeftOf(x) && this.isCollideWithObjects(objects, this.isCollideWithObjectFromRight);
+};
+
+Hero.prototype.canMoveRight= function(x, objects) {
+    return this.canGoRightOf(x) && this.isCollideWithObjects(objects, this.isCollideWithObjectFromLeft);
 };
 
 module.exports = Hero;
