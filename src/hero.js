@@ -6,6 +6,7 @@ function Hero(x, y) {
     this.vectorX = 1;
     this.vectorY = 1;
     this.speed = 5;
+    this.pixelRatio = 312;
     this.size = 30;
     this.isReady = false;
     this.resetMovementState();
@@ -60,7 +61,7 @@ Hero.prototype.turnDown = function() {
 
 Hero.prototype.resetMovementState = function(deltaTime) {
     this.deltaTime = deltaTime;
-    this.pixelPerS = Math.round(this.speed * this.deltaTime);
+    this.pixelPerS = Math.round(this.pixelRatio * this.deltaTime);
     this.vectorX = 0;
     this.vectorY = 0;
     this.isMovingStateChanged = false;

@@ -25,7 +25,7 @@
         var keysDown = inputs.getKeysDown();
         camera.init();
         drawer.clear(hero.x, hero.y);
-        updater.update(keysDown, 1);
+        updater.update(keysDown, this.deltaTime);
         updater.updateOthersHeroes(heroes);
         if (hero.isMovingStateChanged)
             socket.emit('updateHero', hero);
