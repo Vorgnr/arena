@@ -4,7 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 var Hero = require('./server/model/hero');
-var User = require('./server/model/user');
+var Client = require('./server/client')
 
 app.use(express.static('dist'));
 app.use(express.static('public'));
@@ -13,22 +13,14 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-var users = {};
+var clients = {};
 
 io.on('connection', function (socket) {
-    users[socket.id] = new User();
+    clients[socket.id] = new Client(socket);
     
-    socket.on('updateHero', function(hero) {
-        socket.broadcast.emit('updatedHero', { 
-            id: socket.id,
-            hero: hero 
-        });
-    });
-
     socket.on('disconnect', function() {
-        delete users[socket.id];
+        delete clients[socket.id];
     });
 });
-
 
 server.listen(8080);
